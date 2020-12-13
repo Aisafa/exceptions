@@ -31,17 +31,26 @@ class ProductRepositoryTest {
         Product[] actual = repository.findAll();
         assertArrayEquals(expected, actual);
     }
+    @Test
+    public void shouldFindById() {
+        int idToFind = 3;
+        repository.save(iphoneX);
+        repository.save(javaBook);
+        repository.findById(idToFind);
+        Product[] expected = new Product[]{null};
+        Product[] actual = new Product[]{repository.findById(idToFind)};
+        assertArrayEquals(expected, actual);
+    }
 
     @Test
     public void shouldRemoveById() {
-        int idToRemove = 2;
+        int idToRemove = 3;
         repository.save(iphoneX);
         repository.save(iphone12);
         repository.save(javaBook);
         repository.removeById(idToRemove);
-        Product[] expected = new Product[]{iphoneX, javaBook};
+        Product[] expected = new Product[]{iphoneX, iphone12, javaBook};
         Product[] actual = repository.findAll();
         assertArrayEquals(expected, actual);
     }
-
 }
