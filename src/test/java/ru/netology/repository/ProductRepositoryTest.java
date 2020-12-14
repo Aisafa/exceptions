@@ -1,6 +1,7 @@
 package ru.netology.repository;
 
 import org.junit.jupiter.api.Test;
+import ru.netology.NotFoundException;
 import ru.netology.domain.Book;
 import ru.netology.domain.Product;
 import ru.netology.domain.Smartphone;
@@ -33,6 +34,16 @@ class ProductRepositoryTest {
     }
     @Test
     public void shouldFindById() {
+        int idToFind = 1;
+        repository.save(iphoneX);
+        repository.save(iphone12);
+        repository.findById(idToFind);
+        Product[] expected = new Product[]{iphoneX};
+        Product[] actual = new Product[]{repository.findById(idToFind)};
+        assertArrayEquals(expected, actual);
+    }
+    @Test
+    public void shouldFindByNotId() {
         int idToFind = 3;
         repository.save(iphoneX);
         repository.save(javaBook);
@@ -43,14 +54,22 @@ class ProductRepositoryTest {
     }
 
     @Test
-    public void shouldRemoveById() {
-        int idToRemove = 3;
+    public void shouldRemoveById(){
+        int idToRemove = 2;
         repository.save(iphoneX);
         repository.save(iphone12);
         repository.save(javaBook);
         repository.removeById(idToRemove);
-        Product[] expected = new Product[]{iphoneX, iphone12, javaBook};
+        Product[] expected = new Product[]{iphoneX, javaBook};
         Product[] actual = repository.findAll();
         assertArrayEquals(expected, actual);
+    }
+
+    @Test
+    public void shouldRemoveNotById() throws NotFoundException {
+        int idToRemove = 3;
+        repository.save(iphoneX);
+        repository.save(javaBook);
+        assertThrows(NotFoundException.class, () -> repository.removeById(idToRemove));
     }
 }
